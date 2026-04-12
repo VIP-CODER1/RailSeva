@@ -32,7 +32,10 @@ mongoose.connect(process.env.MONGO_URI, {
 
 
 
-  const genAI = new GoogleGenerativeAI('AIzaSyAT_Z210Ey_bOdT4Y1CfPAiLoSrRvvmR0U');
+    if (!process.env.GOOGLE_API_KEY) {
+        console.warn('GOOGLE_API_KEY is not set in environment variables.');
+    }
+    const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY || '');
 
   app.post('/api/generate', async (req, res) => {
     const { prompt } = req.body;

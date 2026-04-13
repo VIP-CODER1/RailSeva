@@ -22,15 +22,30 @@ const generateOtp = () => otpGenerator.generate(6, { upperCase: false, specialCh
 
 // Creates a new user and sends them an OTP for verification.
 router.post('/signup', async (req, res) => {
-  const { name, mobileNumber, email, password } = req.body;
+  const { name, email, password } = req.body;
 
   try {
+    if (!name || !email || !password) {
+      return res.status(400).json({ message: 'Name, email, and password are required.' });
+    }
+
     // Generate OTP
     const otp = generateOtp();
     const otpExpires = Date.now() + 300000; // OTP valid for 5 minutes
 
+    const existingUser = await User.findOne({ email });
+    if (existingUser) return res.status(400).json({ message: 'Email already registered' });
+
     const hashedPassword = await bcrypt.hash(password, 10);
-    const user = new User({ name, mobileNumber, email, password: hashedPassword, otp, otpExpires });
+    const user = new User({
+      name,
+      email,
+      // Keep mobileNumber populated to avoid unique index issues in existing schema.
+      mobileNumber: email,
+      password: hashedPassword,
+      otp,
+      otpExpires
+    });
     await user.save();
 
     // Send OTP email
@@ -44,16 +59,22 @@ router.post('/signup', async (req, res) => {
 
     res.status(200).json({ message: 'Sign-up successful. Please verify your OTP.' });
   } catch (error) {
-    res.status(500).json({ message: 'Error during sign-up', error });
+    const duplicate = error?.code === 11000;
+    if (duplicate) {
+      return res.status(400).json({ message: 'User already exists with this email.' });
+    }
+
+    const details = error?.message || 'Unknown server error';
+    res.status(500).json({ message: `Error during sign-up: ${details}` });
   }
 });
 
 // Validates credentials and returns a JWT if the password is correct.
 router.post('/signin', async (req, res) => {
-  const { mobileNumber, password } = req.body;
+  const { email, password } = req.body;
 
   try {
-    const user = await User.findOne({ mobileNumber });
+    const user = await User.findOne({ email });
     if (!user) return res.status(404).json({ message: 'User not found' });
 
     const match = await bcrypt.compare(password, user.password);
@@ -69,10 +90,10 @@ router.post('/signin', async (req, res) => {
 
 // Confirms the OTP and marks the account as verified.
 router.post('/verify-otp', async (req, res) => {
-  const { mobileNumber, otp } = req.body;
+  const { email, otp } = req.body;
 
   try {
-    const user = await User.findOne({ mobileNumber });
+    const user = await User.findOne({ email });
     if (!user) return res.status(404).json({ message: 'User not found' });
 
     if (user.otpExpires < Date.now()) return res.status(400).json({ message: 'OTP expired' });

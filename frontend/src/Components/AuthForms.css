@@ -1,0 +1,60 @@
+.auth-page {
+  min-height: calc(100vh - 88px);
+  display: grid;
+  place-items: center;
+  padding: 2rem 1rem;
+  background: radial-gradient(circle at 20% 10%, #d8eef7 0%, transparent 32%),
+              radial-gradient(circle at 80% 8%, #ffe7cb 0%, transparent 30%),
+              #f4f7fb;
+}
+
+.auth-card {
+  width: min(100%, 460px);
+  background: #ffffff;
+  border: 1px solid #dce7f3;
+  border-radius: 18px;
+  box-shadow: 0 24px 50px rgba(24, 55, 88, 0.12);
+  padding: 1.8rem;
+}
+
+.auth-card h2 {
+  margin: 0;
+  font-size: 2rem;
+  color: #12304f;
+  font-family: "Reddit Sans Condensed", "Trebuchet MS", sans-serif;
+}
+
+.auth-card p {
+  margin: 0.45rem 0 1.3rem;
+  color: #506a84;
+}
+
+.auth-card .form-label {
+  font-weight: 700;
+  color: #14324f;
+}
+
+.auth-card .form-control {
+  border-radius: 12px;
+  border: 1px solid #c9d7e7;
+  padding: 0.75rem 0.9rem;
+}
+
+.auth-card .form-control:focus {
+  border-color: #0f8b8d;
+  box-shadow: 0 0 0 0.2rem rgba(15, 139, 141, 0.18);
+}
+
+.auth-submit {
+  width: 100%;
+  border: none;
+  border-radius: 12px;
+  padding: 0.75rem 1rem;
+  font-weight: 700;
+  background: linear-gradient(120deg, #114b5f, #0f8b8d);
+  box-shadow: 0 10px 22px rgba(17, 75, 95, 0.25);
+}
+
+.auth-submit:hover {
+  transform: translateY(-1px);
+}

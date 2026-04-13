@@ -3,14 +3,23 @@ import React, { createContext, useState, useContext } from 'react';
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null); // user will hold the logged-in user details
+  const [user, setUser] = useState(() => {
+    const stored = localStorage.getItem('railseva_user');
+    return stored ? JSON.parse(stored) : null;
+  });
 
-  const login = (userData) => {
-    setUser(userData); // userData should contain user details like name
+  const login = (userData, token) => {
+    setUser(userData);
+    localStorage.setItem('railseva_user', JSON.stringify(userData));
+    if (token) {
+      localStorage.setItem('railseva_token', token);
+    }
   };
 
   const logout = () => {
     setUser(null);
+    localStorage.removeItem('railseva_user');
+    localStorage.removeItem('railseva_token');
   };
 
   return (

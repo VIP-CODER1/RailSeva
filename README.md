@@ -4,6 +4,9 @@ AI-assisted complaint management system for Indian Railways.
 
 RailSeva helps passengers file complaints, attach media, extract ticket details, classify issues, and route them to the correct department. It combines a React frontend, a Node.js backend, and a FastAPI-based ML service for OCR and media analysis.
 
+<img width="1890" height="825" alt="image" src="https://github.com/user-attachments/assets/f51241df-d3b0-405b-929f-3d54d2734e99" />
+<img width="1216" height="1430" alt="System_Architecture_RailSeva" src="https://github.com/user-attachments/assets/e62248fa-7fed-4c8f-bfd0-c19820172083" />
+
 ## Overview
 
 RailSeva is designed to streamline railway complaint handling with a simple user flow:

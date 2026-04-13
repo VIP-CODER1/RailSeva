@@ -3,11 +3,14 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
+// Handles the login form and sends credentials to the auth API.
 const SignIn = () => {
   const [mobileNumber, setMobileNumber] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate(); 
 
+  // Sends login credentials to the backend and routes the user after success.
+  // Posts login credentials and navigates after a successful response.
   const handleSubmit = async (e) => {
     e.preventDefault();
 

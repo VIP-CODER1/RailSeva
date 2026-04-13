@@ -9,9 +9,11 @@ const predictedMaintenance = [
   { id: 5, location: 'Yesvantpur Junction', trainNo: '22692', issueCategory: 'Cleanliness', dueDate: '2024-08-25' },
 ];
 
+// Shows a simple predicted maintenance table with location filtering.
 export default function Prection() {
   const [selectedLocation, setSelectedLocation] = useState('All');
 
+  // Narrows the list to the selected location so the table stays focused.
   const filteredMaintenance = selectedLocation === 'All' 
     ? predictedMaintenance 
     : predictedMaintenance.filter(item => item.location === selectedLocation);

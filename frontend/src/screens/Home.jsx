@@ -6,10 +6,12 @@ import Chatbot from './chatBot';
 
 
 
+// Wraps the chatbot route in the app shell used for this screen.
 const Home = () => {
 
   
 
+  // Hosts the navigation shell for the chatbot screen.
   return (
     <div>
        <Router>

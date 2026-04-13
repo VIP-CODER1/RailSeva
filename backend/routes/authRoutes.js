@@ -7,7 +7,7 @@ const otpGenerator = require('otp-generator');
 const nodemailer = require('nodemailer');
 require('dotenv').config();  
 
-// Set up Nodemailer transport using environment variables
+// Sets up the email transport used to send OTP messages.
 const transporter = nodemailer.createTransport({
   service: 'Gmail',
   auth: {
@@ -16,10 +16,11 @@ const transporter = nodemailer.createTransport({
   }
 });
 
-// Helper function to generate OTP
+// Generates a numeric OTP without letters or symbols.
+// Creates a six-digit numeric OTP.
 const generateOtp = () => otpGenerator.generate(6, { upperCase: false, specialChars: false, alphabets: false });
 
-// Sign Up Route
+// Creates a new user and sends them an OTP for verification.
 router.post('/signup', async (req, res) => {
   const { name, mobileNumber, email, password } = req.body;
 
@@ -47,7 +48,7 @@ router.post('/signup', async (req, res) => {
   }
 });
 
-// Sign In Route
+// Validates credentials and returns a JWT if the password is correct.
 router.post('/signin', async (req, res) => {
   const { mobileNumber, password } = req.body;
 
@@ -66,7 +67,7 @@ router.post('/signin', async (req, res) => {
   }
 });
 
-// Verify OTP Route
+// Confirms the OTP and marks the account as verified.
 router.post('/verify-otp', async (req, res) => {
   const { mobileNumber, otp } = req.body;
 

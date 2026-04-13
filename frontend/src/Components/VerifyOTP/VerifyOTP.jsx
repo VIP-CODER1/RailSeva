@@ -2,12 +2,15 @@
  import React, { useState } from 'react';
  import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+ // Verifies the OTP that was sent after signup.
  const VerifyOtp = () => {
    const [mobileNumber, setMobileNumber] = useState('');
    const [otp, setOtp] = useState('');
 const navigate = useNavigate(); 
 
-   const handleSubmit = async (e) => {
+   // Verifies the OTP sent to the user's mobile number.
+  // Confirms the OTP with the backend and redirects on success.
+  const handleSubmit = async (e) => {
      e.preventDefault();
 
      try {

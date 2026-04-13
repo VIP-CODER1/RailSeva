@@ -39,6 +39,8 @@ const categoryToDepartment = {
     "Miscellaneous": "General/Miscellaneous Department"
 };
 
+// Converts the train number prefix into the railway zone used for reporting.
+// Converts the train number prefix into a zone name used by analytics.
 const getZoneFromTrainNo = (trainNo) => {
     const prefix = trainNo.substring(0, 1);
     console.log('Train No:', trainNo);
@@ -51,7 +53,10 @@ const getZoneFromTrainNo = (trainNo) => {
     return 'Unknown Zone';
 };
 
+// Updates derived fields before the complaint is written to MongoDB.
 complaintSchema.pre('save', function (next) {
+    // Formats dates as YYYY-MM for monthly grouping.
+    // Formats a date as YYYY-MM for monthly rollups.
     const currentMonth = (date) => {
         const month = date.getMonth() + 1;
         const year = date.getFullYear();

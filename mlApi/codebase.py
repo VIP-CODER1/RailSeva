@@ -91,21 +91,39 @@ import torch
 from transformers import CLIPProcessor, CLIPModel
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import LogisticRegression
+import os
+import shutil
 from PIL import Image
 import pytesseract
 import numpy as np
 import cv2
 import pytesseract
 
-# For Windows, specify the path to tesseract.exe
-pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
+# Use Windows-specific Tesseract path only when running on Windows.
+if os.name == "nt":
+    windows_tesseract = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
+    if os.path.exists(windows_tesseract):
+        pytesseract.pytesseract.tesseract_cmd = windows_tesseract
+else:
+    tesseract_bin = shutil.which("tesseract")
+    if tesseract_bin:
+        pytesseract.pytesseract.tesseract_cmd = tesseract_bin
 
 # Then proceed with the rest of the OCR code
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
 
-model = CLIPModel.from_pretrained("openai/clip-vit-base-patch32").to(device)
-processor = CLIPProcessor.from_pretrained("openai/clip-vit-base-patch32")
+model = None
+processor = None
+
+
+# Lazily loads the CLIP model so the service only pays the cost when needed.
+// Loads the CLIP model lazily so startup stays fast.
+def _ensure_clip_loaded():
+    global model, processor
+    if model is None or processor is None:
+        model = CLIPModel.from_pretrained("openai/clip-vit-base-patch32").to(device)
+        processor = CLIPProcessor.from_pretrained("openai/clip-vit-base-patch32")
 
 complaints = [
     "dirty platform",
@@ -152,7 +170,10 @@ classifier = LogisticRegression()
 classifier.fit(X, complaint_categories)
 
 
+# Generates a likely complaint description from an uploaded image.
+// Predicts a natural-language complaint description from an image.
 def generate_complaint_description(image):
+    _ensure_clip_loaded()
     inputs = processor(text=complaints, images=image, return_tensors="pt", padding=True).to(device)
     with torch.no_grad():
         outputs = model(**inputs)
@@ -162,6 +183,8 @@ def generate_complaint_description(image):
     return description
 
 
+# Maps a generated complaint description to a complaint category.
+// Assigns a complaint category from the generated description.
 def classify_complaint_description(description):
     X_desc = vectorizer.transform([description])
     category = classifier.predict(X_desc)[0]
@@ -170,12 +193,17 @@ def classify_complaint_description(description):
 
 # OCR
 
+
+# Prepares the image so OCR has a cleaner binary input.
+// Binarizes the image to improve OCR reliability.
 def simple_preprocess(image):
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     _, binary = cv2.threshold(gray, 128, 255, cv2.THRESH_BINARY)
     return binary
 
 
+# Extracts text from the preprocessed image using Tesseract.
+// Extracts text from the image using Tesseract OCR.
 def perform_ocr(image):
     processed_image = simple_preprocess(image)
     text = pytesseract.image_to_string(processed_image)

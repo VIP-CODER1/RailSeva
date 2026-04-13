@@ -114,7 +114,9 @@ app.add_middleware(
     allow_headers=["*"],  # Allow all headers
 )
 
+# Accepts an image, runs complaint description generation, and returns the result.
 @app.post("/upload-image/")
+// Accepts an image and returns the generated complaint description and category.
 async def upload_image(file: UploadFile = File(...)):
     try:
         # Read and process the image
@@ -130,7 +132,9 @@ async def upload_image(file: UploadFile = File(...)):
     except Exception as e:
         return JSONResponse(content={"error": str(e)}, status_code=400)
 
+# Extracts ticket text from the uploaded image and parses journey details.
 @app.post("/ocr-image")
+// Reads ticket text from an uploaded image and extracts journey details.
 async def upload_file(ticketImage: UploadFile = File(...)):
     try:
         if ticketImage is not None:
@@ -168,7 +172,9 @@ async def upload_file(ticketImage: UploadFile = File(...)):
     except Exception as e:
         return JSONResponse(content={"error": str(e)}, status_code=400)
 
+# Returns an issue prediction based on time, location, and weather inputs.
 @app.post("/predict-issue/")
+// Predicts an issue label from date, time, location, and weather inputs.
 async def predict_issue_endpoint(
     date: str = Form(...),
     time: str = Form(...),

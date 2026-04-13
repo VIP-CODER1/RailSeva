@@ -33,7 +33,8 @@ const uploadWithMulter = multer({
     })
 }).single('file'); // Limit to one file
 
-// Function to process the file with ML model
+// Sends the uploaded file to the ML service for complaint classification.
+// Sends the uploaded file to the ML service and returns the parsed result.
 const processWithMLModel = async (file) => {
     try {
         const form = new FormData();
@@ -54,6 +55,7 @@ const processWithMLModel = async (file) => {
     }
 };
 
+// Uploads a file to Cloudinary and returns its public URL.
 const uploadToCloudinary = async (file) => {
     try {
         if (!file) {
@@ -77,7 +79,8 @@ const uploadToCloudinary = async (file) => {
     }
 };
 
-// Main handler function
+// Builds and saves the complaint record after optional ML and upload steps.
+// Coordinates ML processing, cloud upload, and complaint persistence.
 const handleUpload = async (req, res) => {
     try {
         let mlData = { complaint_description: null, category: null };
@@ -127,6 +130,7 @@ const handleUpload = async (req, res) => {
 
 const router = express.Router();
 
+// Accepts a new complaint upload and stores the processed record.
 router.post('/upload-media', (req, res) => {
     uploadWithMulter(req, res, err => {
         if (err) {
@@ -137,7 +141,7 @@ router.post('/upload-media', (req, res) => {
     });
 });
 
-// Complaint resolution route
+// Marks a complaint as resolved and stores the resolution image.
 router.post('/resolve-complaint/:id', uploadWithMulter, async (req, res) => {
     try {
         const { resolutionText } = req.body;

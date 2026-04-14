@@ -17,7 +17,7 @@ const { login } = useAuth();
      e.preventDefault();
 
      try {
-       const response = await axios.post('http://localhost:8001/auth/verify-otp', {
+       const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/auth/verify-otp`, {
          email,
          otp,
        });

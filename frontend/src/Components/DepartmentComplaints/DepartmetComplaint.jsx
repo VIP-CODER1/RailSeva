@@ -32,7 +32,7 @@ export default function DepartmentPage() {
     // Pulls the latest complaints from the backend when the page mounts.
     const fetchComplaints = async () => {
       try {
-        const response = await axios.get('http://localhost:8001/complaintslogs/all'); 
+        const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/complaintslogs/all`); 
         setComplaints(response.data);
         setLoading(false);
       } catch (error) {
@@ -69,7 +69,7 @@ export default function DepartmentPage() {
       if (resolutionImage) {
         formData.append('file', resolutionImage);
       }
-      await axios.post(`http://localhost:8001/resolve-complaint/${selectedComplaint._id}`, formData, {
+      await axios.post(`${process.env.REACT_APP_BACKEND_URL}/resolve-complaint/${selectedComplaint._id}`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -85,7 +85,7 @@ export default function DepartmentPage() {
   // Moves the complaint to another department selected by the operator.
   const handleTransfer = async () => {
     try {
-      await axios.post(`http://localhost:8001/resolve/${selectedComplaint._id}/transfer`, { department: transferDepartment });
+      await axios.post(`${process.env.REACT_APP_BACKEND_URL}/resolve/${selectedComplaint._id}/transfer`, { department: transferDepartment });
       setShowTransferModal(false);
       setSelectedComplaint(null);
     } catch (error) {
@@ -97,7 +97,7 @@ export default function DepartmentPage() {
   // Marks the complaint as irrelevant and closes the review flow.
   const handleReportIrrelevance = async () => {
     try {
-      await axios.post(`http://localhost:8001/complaints/${selectedComplaint._id}/report`);
+      await axios.post(`${process.env.REACT_APP_BACKEND_URL}/complaints/${selectedComplaint._id}/report`);
       setShowReportModal(false);
       setSelectedComplaint(null);
     } catch (error) {

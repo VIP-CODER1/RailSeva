@@ -50,7 +50,7 @@ function ComplaintForm() {
       const formData = new FormData();
       formData.append('ticketImage', ticketImage);
 
-      const response = await fetch('http://localhost:8000/ocr-image', {
+      const response = await fetch(`${process.env.REACT_APP_ML_URL}/ocr-image`, {
         method: 'POST',
         body: formData,
       });
@@ -111,7 +111,7 @@ function ComplaintForm() {
     }
 
     try {
-      const response = await fetch('http://localhost:8001/upload-media', {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/upload-media`, {
         method: 'POST',
         body: form,
        

@@ -33,7 +33,7 @@ export default function ComplaintStatus() {
     setError("");
 
     try {
-      const response = await axios.get(`http://localhost:8001/complaintstatus/${complaintId}`);
+      const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/complaintstatus/${complaintId}`);
       setComplaintData(response.data);
     } catch (error) {
       setError(error.response ? error.response.data.message : error.message);

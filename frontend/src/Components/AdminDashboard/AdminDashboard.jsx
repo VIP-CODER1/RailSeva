@@ -21,7 +21,7 @@ export default function AdminDashboard() {
     // Loads complaint analytics from the backend dashboard endpoint.
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://localhost:8001/complaints/dashboard');
+        const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/complaints/dashboard`);
         console.log(response.data);
         setData(response.data);
       } catch (error) {

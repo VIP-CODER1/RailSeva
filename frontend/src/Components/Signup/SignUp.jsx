@@ -18,7 +18,7 @@ const SignUp = () => {
 
     try {
       console.log('Submitting sign-up form');
-      const response = await axios.post('http://localhost:8001/auth/signup', {
+      const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/auth/signup`, {
         name,
         email,
         password,

@@ -18,7 +18,7 @@ const ChatBot = ({ handleSubmit, prompt, setPrompt }) => {
     const onSubmit = async (e) => {
         e.preventDefault();
         try {
-            const res = await fetch('http://localhost:8001/api/generate', {
+            const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/generate`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

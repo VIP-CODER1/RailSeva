@@ -18,7 +18,7 @@ const SignIn = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post('http://localhost:8001/auth/signin', {
+      const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/auth/signin`, {
         email,
         password,
       });

@@ -17,7 +17,7 @@ export default function ComplaintLog() {
     // Loads complaints from the backend and tags each item with a display urgency.
     const fetchComplaints = async () => {
       try {
-        const response = await axios.get('http://localhost:8001/complaintslogs/all');
+        const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/complaintslogs/all`);
         console.log(response.data);
 
         // Add random urgency to each complaint
@@ -44,7 +44,7 @@ export default function ComplaintLog() {
         updateData.isArchived = true;
       }
 
-      await axios.put(`http://localhost:8001/complaintslogs/${complaintId}`, { status: newStatus });
+      await axios.put(`${process.env.REACT_APP_BACKEND_URL}/complaintslogs/${complaintId}`, { status: newStatus });
       setComplaints(complaints.map(complaint =>
         complaint._id === complaintId ? { ...complaint, status: newStatus, isArchived: newStatus === 'Resolved' } : complaint
       ));

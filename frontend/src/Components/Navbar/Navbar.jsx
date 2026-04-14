@@ -1,8 +1,6 @@
 
 import React from 'react';
 import { useAuth } from '../../AuthContext'; // Adjust the path as needed
-import { useTranslation } from 'react-i18next';
-import LanguageSelector from '../languageSelector'; 
 import { Link, useNavigate } from 'react-router-dom';
 // Renders the shared top navigation and language picker.
 const ADMIN_EMAIL = 'vipulmth1@gmail.com';

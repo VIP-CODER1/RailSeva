@@ -2,6 +2,7 @@
 import React from 'react';
 import { useAuth } from '../../AuthContext'; // Adjust the path as needed
 import { Link, useNavigate } from 'react-router-dom';
+import LanguageSelector from '../languageSelector';
 // Renders the shared top navigation and language picker.
 const ADMIN_EMAIL = 'vipulmth1@gmail.com';
 

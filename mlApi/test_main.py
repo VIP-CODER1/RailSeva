@@ -114,6 +114,11 @@ app.add_middleware(
     allow_headers=["*"],  # Allow all headers
 )
 
+# Health check endpoint for deployment monitoring.
+@app.get("/health")
+async def health_check():
+    return JSONResponse(content={"status": "ok"})
+
 # Accepts an image, runs complaint description generation, and returns the result.
 @app.post("/upload-image/")
 async def upload_image(file: UploadFile = File(...)):

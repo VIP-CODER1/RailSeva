@@ -1,20 +1,16 @@
 
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { AlertCircle, Clock, MessageSquare, ThumbsUp, Download } from 'lucide-react';
+import { AlertCircle, Clock, MessageSquare, ThumbsUp } from 'lucide-react';
 import { 
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, 
-  LineChart, Line, Legend, PieChart, Pie, Cell 
+  LineChart, Line
 } from 'recharts';
 import axios from 'axios';
-
-const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
 
 // Displays complaint analytics and summary charts for administrators.
 export default function AdminDashboard() {
   const [data, setData] = useState({ complaintData: [], categoryData: [], performanceData: [] , timeData: []});
-  const [selectedZone, setSelectedZone] = useState('All');
-  const [selectedDepartment, setSelectedDepartment] = useState('All');
 
   // Fetches dashboard metrics from the backend when the page loads.
   useEffect(() => {

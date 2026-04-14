@@ -52,8 +52,7 @@
 import React, { useState } from 'react';
 import './App.css';
 import ChatBot from "./screens/chatBot.jsx";
-import { Toaster, toast } from 'sonner'
-import { useTranslation } from 'react-i18next';
+import { Toaster } from 'sonner'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { AuthProvider } from './AuthContext.js';
 import Navbar from "./Components/Navbar/Navbar.jsx";
@@ -66,7 +65,6 @@ import ComplaintStatus from './Components/ComplaintStatus/ComplaintStatus.jsx';
 import AdminDashboard from "./Components/AdminDashboard/AdminDashboard.jsx";
 import ComplaintLog from './Components/ComplaintLog/ComplaintLog.jsx';
 import DepartmentComplaint from './Components/DepartmentComplaints/DepartmetComplaint.jsx';
-import LanguageSelector from './Components/languageSelector'; // Import LanguageSelector
 import Prediction from './Components/Prediction/Prediction.jsx';
 
 

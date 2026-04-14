@@ -8,7 +8,6 @@ import { Link, useNavigate } from 'react-router-dom';
 const ADMIN_EMAIL = 'vipulmth1@gmail.com';
 
 const Navbar = () => {
-  const { t } = useTranslation();
   const { user, logout } = useAuth(); // Get user from context
   const navigate = useNavigate();
   const isAdmin = user?.email === ADMIN_EMAIL;

@@ -35,38 +35,7 @@ export default function ComplaintLog() {
     fetchComplaints();
   }, []);
 
-  // Updates the complaint status and marks resolved items as archived.
-  // Sends a status update for one complaint and refreshes local state.
-  const handleStatusUpdate = async (complaintId, newStatus) => {
-    try {
-      const updateData = { status: newStatus };
-      if (newStatus === 'Resolved') {
-        updateData.isArchived = true;
-      }
 
-      await axios.put(`${process.env.REACT_APP_BACKEND_URL}/complaintslogs/${complaintId}`, { status: newStatus });
-      setComplaints(complaints.map(complaint =>
-        complaint._id === complaintId ? { ...complaint, status: newStatus, isArchived: newStatus === 'Resolved' } : complaint
-      ));
-    } catch (error) {
-      console.error('Error updating complaint status:', error);
-    }
-  };
-
-  // Maps a complaint status to a readable badge color.
-  // Converts a complaint status into a readable badge.
-  const getStatusBadge = (status) => {
-    switch (status) {
-      case 'Under Review':
-        return <Badge bg="danger">Under Review</Badge>;
-      case 'Assigned':
-        return <Badge bg="warning" text="dark">Assigned</Badge>;
-      case 'Resolved':
-        return <Badge bg="success">Resolved</Badge>;
-      default:
-        return <Badge>{status}</Badge>;
-    }
-  };
 
   // Maps the urgency label to a Bootstrap badge.
   // Converts the generated urgency label into a badge color.

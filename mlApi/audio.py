@@ -34,7 +34,6 @@ sentiment_model = pipeline("sentiment-analysis", model="distilbert-base-uncased-
 
 
 # Transcribes a WAV/Audio file into plain text for complaint analysis.
-// Converts audio input into text using speech recognition.
 def transcribe_audio(audio_file):
     recognizer = sr.Recognizer()
     audio = sr.AudioFile(BytesIO(audio_file))
@@ -44,7 +43,6 @@ def transcribe_audio(audio_file):
 
 
 # Classifies the complaint text and returns the predicted category plus probabilities.
-// Predicts the complaint category and returns class probabilities.
 def classify_complaint_description(description):
     X_desc = vectorizer.transform([description])
     category = classifier.predict(X_desc)[0]
@@ -53,7 +51,6 @@ def classify_complaint_description(description):
 
 
 # Runs sentiment analysis so the system can detect how the user feels.
-// Scores the text to estimate sentiment and confidence.
 def analyze_sentiment(text):
     result = sentiment_model(text)[0]
     sentiment = result['label']

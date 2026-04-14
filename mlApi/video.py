@@ -19,7 +19,6 @@ device = "cuda" if torch.cuda.is_available() else "cpu"
 
 
 # Loads the models used for image, sentiment, and speech analysis.
-// Loads the vision, text, and speech models used by the video pipeline.
 def load_models():
     clip_model = CLIPModel.from_pretrained("openai/clip-vit-large-patch14").to(device)
     clip_processor = CLIPProcessor.from_pretrained("openai/clip-vit-large-patch14")
@@ -87,7 +86,6 @@ classifier.fit(X_train_tfidf, y_train)
 
 
 # Predicts the most likely complaint description from a video frame image.
-// Picks the most likely complaint description from a video frame.
 def generate_complaint_description(image):
     inputs = clip_processor(text=complaints, images=image, return_tensors="pt", padding=True).to(device)
     with torch.no_grad():
@@ -101,7 +99,6 @@ def generate_complaint_description(image):
 
 
 # Classifies the generated complaint text into a railway complaint category.
-// Predicts the category and probabilities for a complaint description.
 def classify_complaint_description(description):
     X_desc = vectorizer.transform([description])
     category = classifier.predict(X_desc)[0]
@@ -110,7 +107,6 @@ def classify_complaint_description(description):
 
 
 # Scores the tone of the complaint text using sentiment analysis.
-// Determines sentiment for the given complaint text.
 def analyze_sentiment(text):
     result = sentiment_model(text)[0]
     sentiment = result['label']
@@ -119,7 +115,6 @@ def analyze_sentiment(text):
 
 
 # Pulls representative frames from a video so they can be OCR'd or analyzed.
-// Samples one frame every 10 seconds so the video can be analyzed efficiently.
 def extract_keyframes(video_path):
     keyframes = []
     cap = cv2.VideoCapture(video_path)
@@ -136,7 +131,6 @@ def extract_keyframes(video_path):
 
 
 # Reads any visible subtitles or text from a single video frame.
-// Reads any visible text from a single video frame.
 def extract_subtitles_from_frame(frame):
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     text = pytesseract.image_to_string(gray)
@@ -144,7 +138,6 @@ def extract_subtitles_from_frame(frame):
 
 
 # Produces a text transcript from the audio track of the video.
-// Extracts the audio track from a video and transcribes it to text.
 def generate_subtitles_from_video(video_path):
     if not whisper_model:
         raise RuntimeError("Whisper model is not loaded. Please check the model loading.")

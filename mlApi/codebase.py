@@ -118,7 +118,6 @@ processor = None
 
 
 # Lazily loads the CLIP model so the service only pays the cost when needed.
-// Loads the CLIP model lazily so startup stays fast.
 def _ensure_clip_loaded():
     global model, processor
     if model is None or processor is None:
@@ -171,7 +170,6 @@ classifier.fit(X, complaint_categories)
 
 
 # Generates a likely complaint description from an uploaded image.
-// Predicts a natural-language complaint description from an image.
 def generate_complaint_description(image):
     _ensure_clip_loaded()
     inputs = processor(text=complaints, images=image, return_tensors="pt", padding=True).to(device)
@@ -184,7 +182,6 @@ def generate_complaint_description(image):
 
 
 # Maps a generated complaint description to a complaint category.
-// Assigns a complaint category from the generated description.
 def classify_complaint_description(description):
     X_desc = vectorizer.transform([description])
     category = classifier.predict(X_desc)[0]
@@ -195,7 +192,6 @@ def classify_complaint_description(description):
 
 
 # Prepares the image so OCR has a cleaner binary input.
-// Binarizes the image to improve OCR reliability.
 def simple_preprocess(image):
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     _, binary = cv2.threshold(gray, 128, 255, cv2.THRESH_BINARY)
@@ -203,7 +199,6 @@ def simple_preprocess(image):
 
 
 # Extracts text from the preprocessed image using Tesseract.
-// Extracts text from the image using Tesseract OCR.
 def perform_ocr(image):
     processed_image = simple_preprocess(image)
     text = pytesseract.image_to_string(processed_image)

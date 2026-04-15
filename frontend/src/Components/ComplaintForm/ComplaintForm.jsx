@@ -17,6 +17,7 @@ function ComplaintForm() {
   const [file, setFile] = useState(null);
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const [ticketImage, setTicketImage] = useState(null);
   const [ocrData, setOcrData] = useState({ pnrNo: '', trainNo: '', coachNo: '', seatNo: '' });
 
@@ -97,8 +98,7 @@ function ComplaintForm() {
   // Sends the complaint payload and attached media to the backend.
   // Submits the complaint payload and attachment to the backend.
   const handleSubmit = async (e) => {
-    e.preventDefault();
-
+    e.preventDefault();    setIsLoading(true);
     const form = new FormData();
     form.append('trainNo', ocrData.trainNo || formData.trainNo);
     form.append('pnrNo', ocrData.pnrNo || formData.pnrNo);
@@ -118,20 +118,22 @@ function ComplaintForm() {
       });
       if (response.ok) {
         const responseData = await response.json();
+        const complaintId = responseData.complaint?._id || 'N/A';
         setMessage(
-          responseData.url
-            ? `Complaint submitted successfully! File URL: ${responseData.url}`
-            : 'Complaint submitted successfully!'
+          `Complaint submitted successfully! Your Complaint ID: ${complaintId}`
         );
         setError('');
+        setIsLoading(false);
       } else {
         const errorData = await response.json();  // Check for more details from the server
         setError(`An error occurred: ${errorData.error || errorData.message || 'Unknown error'}`);
         setMessage('');
+        setIsLoading(false);
       }
     } catch (err) {
       setError('An error occurred while submitting the complaint. Please try again.');
       setMessage('');
+      setIsLoading(false);
     }
   };
 
@@ -147,6 +149,14 @@ function ComplaintForm() {
               <p className="text-muted">{t('complaint.help_resolve')}</p>
               {message && <Alert variant="success">{message}</Alert>}
               {error && <Alert variant="danger">{error}</Alert>}
+              {isLoading && (
+                <div className="text-center my-3">
+                  <div className="spinner-border text-primary" role="status">
+                    <span className="visually-hidden">Loading...</span>
+                  </div>
+                  <p className="mt-2 text-muted">Submitting your complaint...</p>
+                </div>
+              )}
               <form onSubmit={handleSubmit}>
                 <div className="mb-3">
                   <label htmlFor="ticketImage" className="form-label">
@@ -302,8 +312,9 @@ function ComplaintForm() {
                     type="submit"
                     className="btn btn-primary btn-block"
                     style={{ backgroundColor: '#71b0f4', borderColor: '#71b0f4' }}
+                    disabled={isLoading}
                   >
-                    {t('complaint.submit')}
+                    {isLoading ? 'Submitting...' : t('complaint.submit')}
                   </button>
                 </div>
               </form>

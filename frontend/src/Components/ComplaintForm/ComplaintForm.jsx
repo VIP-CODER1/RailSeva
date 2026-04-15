@@ -118,7 +118,9 @@ function ComplaintForm() {
       });
       if (response.ok) {
         const responseData = await response.json();
-        const complaintId = responseData.complaint?._id || 'N/A';
+        console.log('Full response from backend:', responseData);
+        const complaintId = responseData.complaint?._id || responseData._id || 'N/A';
+        console.log('Extracted complaint ID:', complaintId);
         setMessage(
           `Complaint submitted successfully! Your Complaint ID: ${complaintId}`
         );

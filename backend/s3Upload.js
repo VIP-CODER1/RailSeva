@@ -117,7 +117,13 @@ const handleUpload = async (req, res) => {
 
         await complaint.save();
 
-        res.json({ message: "Complaint submitted successfully", complaint, url: fileUrl });
+        console.log('Complaint saved successfully:', complaint._id);
+        res.json({ 
+          message: "Complaint submitted successfully", 
+          complaint: complaint,
+          _id: complaint._id,
+          url: fileUrl 
+        });
     } catch (error) {
         console.error('Error handling upload:', error);
         res.status(500).json({ error: error.message });
